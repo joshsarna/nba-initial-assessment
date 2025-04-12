@@ -1,24 +1,23 @@
 try {
-    require('./localConfig')
+  require('./localConfig')
 } catch (error) {
-    //
+  //
 }
 
-import axios from 'axios'
-import { BalldontlieAPI } from "@balldontlie/sdk"
+import { nbaService } from './services/nba.service'
 
 const main = async () => {
-    // const result = await axios.get('https://www.balldontlie.io/api/v1/players', {
-    //     headers: {
-    //         Authorization: process.env.BALL_DONT_LIE_API_KEY
-    //     }
-    // })
-    const api = new BalldontlieAPI({apiKey: process.env.BALL_DONT_LIE_API_KEY})
+  const teams = await nbaService.getTeams()
 
-    const results = await api.nba.getTeams()
-    console.log(results)
+  for (let i = 0; i < teams.length; i++) {
+    const team = teams[i]
+    console.log('Team Name:', team.name)
+
+    const playersPerDraftRound = await nbaService.getPlayersPerDraftRound(team.id)
+    console.log('Draft Rounds:', playersPerDraftRound, '\n')
+  }
 }
 
-void main().catch(error => {
-    console.log('SCRIPT FAILED', error)
+void main().catch((error) => {
+  console.log('SCRIPT FAILED', error)
 })
