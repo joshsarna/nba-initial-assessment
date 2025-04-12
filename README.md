@@ -23,15 +23,15 @@ process.env.BALL_DONT_LIE_API_KEY = <your api key>
 ```bash
 $ yarn dbin src/bin/get-draft-round-breakdown-for-team.ts --team='Bucks'
 Team Name: Milwaukee Bucks
-Draft Rounds: { '1': 18, '2': 5, null: 2 }
+Draft Rounds: { '1': 57, '2': 41, '3': 9, '4': 6, '5': 2, '6': 1, '7': 1, '8': 2, '10': 1, null: 42 }
 
 $ dbin src/bin/get-draft-round-breakdown-for-team.ts --team='Milwaukee'
 Team Name: Milwaukee Bucks
-Draft Rounds: { '1': 18, '2': 5, null: 2 }
+Draft Rounds: { '1': 57, '2': 41, '3': 9, '4': 6, '5': 2, '6': 1, '7': 1, '8': 2, '10': 1, null: 42 }
 
 $ dbin src/bin/get-draft-round-breakdown-for-team.ts --team='Milwaukee Bucks'
 Team Name: Milwaukee Bucks
-Draft Rounds: { '1': 18, '2': 5, null: 2 }
+Draft Rounds: { '1': 57, '2': 41, '3': 9, '4': 6, '5': 2, '6': 1, '7': 1, '8': 2, '10': 1, null: 42 }
 ```
 
 ## Errors

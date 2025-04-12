@@ -53,15 +53,24 @@ class NbaService {
   }
 
   private getTeams = async (): Promise<NBATeam[]> => {
-    // TODO handle pagination
     const response = await this.makeRequest<NBATeam>(() => this.client.getTeams())
     return response?.data || []
   }
 
   private getPlayers = async (teamId: number): Promise<NBAPlayer[]> => {
-    // TODO handle pagination
-    const response = await this.makeRequest(() => this.client.getPlayers({ team_ids: [teamId] }))
-    return response?.data || []
+    const players: NBAPlayer[] = []
+    let nextCursor: number
+    do {
+      const response = await this.makeRequest(() => {
+        return this.client.getPlayers({ team_ids: [teamId], per_page: 100, cursor: nextCursor })
+      })
+
+      nextCursor = response?.meta?.next_cursor
+      if (response?.data) {
+        players.push(...response.data)
+      }
+    } while (nextCursor)
+    return players
   }
 
   private makeRequest = async <T>(

@@ -3,7 +3,8 @@
   "scripts": {
     "dbin": "bin/dist-bin.sh",
     "test": "NODE_PATH=`pwd`/dist jest",
-    "run-test": "yarn test --watchAll"
+    "run-test": "yarn test --watchAll",
+    "lint": "eslint --ext .ts src"
   },
   "dependencies": {
     "@balldontlie/sdk": "^1.2.2",
