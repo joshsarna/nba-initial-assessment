@@ -1,4 +1,4 @@
-import { BalldontlieAPI, NBAPlayer, NBATeam } from '@balldontlie/sdk'
+import { ApiResponse, BalldontlieAPI, NBAPlayer, NBATeam } from '@balldontlie/sdk'
 import { NBAClient } from '@balldontlie/sdk/dist/nba'
 import { secretsService } from './secrets.service'
 import { assertTruthy } from '../utils/assertTruthy'
@@ -53,13 +53,38 @@ class NbaService {
   }
 
   private getTeams = async (): Promise<NBATeam[]> => {
-    const response = await this.client.getTeams()
+    // TODO handle pagination
+    const response = await this.makeRequest<NBATeam>(() => this.client.getTeams())
     return response?.data || []
   }
 
   private getPlayers = async (teamId: number): Promise<NBAPlayer[]> => {
-    const response = await this.client.getPlayers({ team_ids: [teamId] })
+    // TODO handle pagination
+    const response = await this.makeRequest(() => this.client.getPlayers({ team_ids: [teamId] }))
     return response?.data || []
+  }
+
+  private makeRequest = async <T>(
+    request: () => Promise<ApiResponse<T[]>>,
+    /**
+     * When set to true, this will cause requests that reeturn a 500-level error to retry once
+     */
+    shouldRetry500s: boolean = true,
+  ): Promise<ApiResponse<T[]>> => {
+    let result: ApiResponse<T[]>
+    try {
+      result = await request()
+    } catch (error) {
+      // retry once on 500 errors;
+      // documentation (https://docs.balldontlie.io/#errors) calls out 500 and 503,
+      // but they also sometimes throw 502 Bad Gateway
+      if (error?.statusCode >= 500 && shouldRetry500s) {
+        return this.makeRequest(request, false)
+      }
+      throw new Error(error.message)
+    }
+
+    return result
   }
 }
 

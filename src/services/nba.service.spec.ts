@@ -1,7 +1,16 @@
 import { NBAPlayer } from '@balldontlie/sdk'
 import { nbaService } from './nba.service'
+import { secretsService } from './secrets.service'
 
 describe('nbaService', () => {
+  beforeEach(() => {
+    jest.spyOn(secretsService, 'getBallDontLieApiKey').mockReturnValue(null)
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('countPlayersPerDraftRound tests', () => {
     const players: NBAPlayer[] = [
       { id: 1, first_name: 'Frodo', last_name: 'Baggins', position: 'Ringbearer', draft_round: null },
