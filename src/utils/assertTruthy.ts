@@ -4,7 +4,7 @@
  * `function` used instead of an arrow function because typescript assertion requirements:
  * https://github.com/microsoft/TypeScript/issues/34523
  */
-export function assertTruthy(predicate: any, errorMessage: string): asserts predicate {
+export function assertTruthy(predicate: unknown, errorMessage: string): asserts predicate {
   if (!predicate) {
     throw new Error(errorMessage)
   }

@@ -1,6 +1,6 @@
 try {
   require('../localConfig')
-} catch (error) {
+} catch {
   //
 }
 
