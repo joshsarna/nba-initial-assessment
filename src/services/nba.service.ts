@@ -1,14 +1,11 @@
 import { BalldontlieAPI, NBAPlayer, NBATeam } from '@balldontlie/sdk'
+import { secretsService } from './secrets.service'
 
 class NbaService {
   api: BalldontlieAPI
 
   constructor() {
-    const apiKey = process.env.BALL_DONT_LIE_API_KEY
-    if (!apiKey) {
-      throw new Error('API key for BALLDONTLIE must be set on process.env')
-    }
-
+    const apiKey: string = secretsService.getBallDontLieApiKey()
     this.api = new BalldontlieAPI({ apiKey })
   }
 
