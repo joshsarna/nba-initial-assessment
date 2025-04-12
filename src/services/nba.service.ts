@@ -17,7 +17,7 @@ class NbaService {
    */
   searchTeamsByName = async (name: string): Promise<NBATeam[]> => {
     const teams: NBATeam[] = await this.getTeams()
-    return teams.filter((team: NBATeam) => team.full_name?.includes(name))
+    return teams.filter((team: NBATeam) => team.full_name?.toLowerCase().includes(name?.toLowerCase()))
   }
 
   /**
@@ -35,11 +35,20 @@ class NbaService {
   /**
    * Returns a breakdown of how many players were obtained in each draft round for a team
    */
-  getPlayersPerDraftRound = async (teamId: number): Promise<Record<string, number>> => {
+  getPlayersPerDraftRound = async (
+    /**
+     * the BALLDONTLIE API's ID for the team; can be found on the response from the `getTeams` function
+     */
+    teamId: number,
+  ): Promise<Record<string, number>> => {
     const players: NBAPlayer[] = await this.getPlayers(teamId)
     return this.countPlayersPerDraftRound(players)
   }
 
+  /**
+   * Returns an object with keys of round numbers and values of the number of players
+   * acquired in that round; players without a draft round will be counted with a key of 'null'
+   */
   private countPlayersPerDraftRound = (players: NBAPlayer[]): Record<string, number> => {
     const playersPerDraftRound: Record<string, number> = {}
     players.forEach((player) => {
@@ -52,12 +61,23 @@ class NbaService {
     return playersPerDraftRound
   }
 
+  /**
+   * Gets a list of NBA teams
+   */
   private getTeams = async (): Promise<NBATeam[]> => {
     const response = await this.makeRequest<NBATeam>(() => this.client.getTeams())
     return response?.data || []
   }
 
-  private getPlayers = async (teamId: number): Promise<NBAPlayer[]> => {
+  /**
+   * Gets a list of players for a given NBA team
+   */
+  private getPlayers = async (
+    /**
+     * the BALLDONTLIE API's ID for the team; can be found on the response from the `getTeams` function
+     */
+    teamId: number,
+  ): Promise<NBAPlayer[]> => {
     const players: NBAPlayer[] = []
     let nextCursor: number
     do {
@@ -73,6 +93,11 @@ class NbaService {
     return players
   }
 
+  /**
+   * Handles calling the BALLDONTLIE API through the sdk;
+   * retries requests that return 500-level errors (unless explicitly told not to)
+   * and throws all other errors
+   */
   private makeRequest = async <T>(
     request: () => Promise<ApiResponse<T[]>>,
     /**

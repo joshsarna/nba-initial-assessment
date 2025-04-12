@@ -1,8 +1,6 @@
 try {
   require('../localConfig')
-} catch {
-  //
-}
+} catch {}
 
 import { nbaService } from '../services/nba.service'
 import { ArgumentParser } from 'argparse'
