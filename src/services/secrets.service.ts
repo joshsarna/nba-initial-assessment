@@ -1,4 +1,4 @@
-import { assertExists } from '../utils/assertExists'
+import { assertTruthy } from '../utils/assertTruthy'
 
 /**
  * This service handles fetching secrets.
@@ -8,7 +8,7 @@ import { assertExists } from '../utils/assertExists'
 class SecretsService {
   getBallDontLieApiKey = (): string => {
     const ballDontLieApiKey: string = process.env.BALL_DONT_LIE_API_KEY
-    assertExists(ballDontLieApiKey, 'API key for BALLDONTLIE must be set on process.env')
+    assertTruthy(ballDontLieApiKey, 'API key for BALLDONTLIE must be set on process.env')
 
     return ballDontLieApiKey
   }

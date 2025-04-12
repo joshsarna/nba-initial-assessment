@@ -1,22 +1,35 @@
 import { BalldontlieAPI, NBAPlayer, NBATeam } from '@balldontlie/sdk'
+import { NBAClient } from '@balldontlie/sdk/dist/nba'
 import { secretsService } from './secrets.service'
+import { assertTruthy } from '../utils/assertTruthy'
 
 class NbaService {
-  api: BalldontlieAPI
+  client: NBAClient
 
   constructor() {
     const apiKey: string = secretsService.getBallDontLieApiKey()
-    this.api = new BalldontlieAPI({ apiKey })
+    this.client = new BalldontlieAPI({ apiKey }).nba
   }
 
-  getTeams = async (): Promise<NBATeam[]> => {
-    const response = await this.api.nba.getTeams()
-    return response?.data || []
+  /**
+   * Returns teams matching the name passed in;
+   * the name can be a city, a team name, or both
+   */
+  searchTeamsByName = async (name: string): Promise<NBATeam[]> => {
+    const teams: NBATeam[] = await this.getTeams()
+    return teams.filter((team: NBATeam) => team.full_name?.includes(name))
   }
 
-  getPlayers = async (teamId: number): Promise<NBAPlayer[]> => {
-    const response = await this.api.nba.getPlayers({ team_ids: [teamId] })
-    return response?.data || []
+  /**
+   * Returns a single team matching the name passed in;
+   * the name can be a city, a team name, or both;
+   * if more than one team matches the name passed in, this will throw an error;
+   * use `searchTeamsByName` if multiple results are desired
+   */
+  getTeamByName = async (name: string): Promise<NBATeam> => {
+    const matchingTeams: NBATeam[] = await this.searchTeamsByName(name)
+    assertTruthy(matchingTeams.length === 1, `team name ${name} matched ${matchingTeams.length} teams`)
+    return matchingTeams[0]
   }
 
   getPlayersPerDraftRound = async (teamId: number): Promise<Record<string, number>> => {
@@ -32,6 +45,16 @@ class NbaService {
     })
 
     return playersPerDraftRound
+  }
+
+  private getTeams = async (): Promise<NBATeam[]> => {
+    const response = await this.client.getTeams()
+    return response?.data || []
+  }
+
+  private getPlayers = async (teamId: number): Promise<NBAPlayer[]> => {
+    const response = await this.client.getPlayers({ team_ids: [teamId] })
+    return response?.data || []
   }
 }
 

@@ -1,12 +1,12 @@
-import { assertExists } from './assertExists'
+import { assertTruthy } from './assertTruthy'
 
-describe('assertExists', () => {
+describe('assertTruthy', () => {
   const errorMessage: string = 'Fool of a Took!'
   it('does not throw an error for truthy values', () => {
     const truthyValues: any[] = [true, {}, [], 'well noises', 1, new Promise(() => {})]
 
     truthyValues.forEach((truthyValue) => {
-      expect(() => assertExists(truthyValue, errorMessage)).not.toThrow()
+      expect(() => assertTruthy(truthyValue, errorMessage)).not.toThrow()
     })
   })
 
@@ -14,7 +14,7 @@ describe('assertExists', () => {
     const falsyValues: any[] = [false, null, undefined, '', 0, NaN]
 
     falsyValues.forEach((falsyValue) => {
-      expect(() => assertExists(falsyValue, errorMessage)).toThrow(errorMessage)
+      expect(() => assertTruthy(falsyValue, errorMessage)).toThrow(errorMessage)
     })
   })
 })

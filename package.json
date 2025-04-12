@@ -1,17 +1,19 @@
 {
-  "dependencies": {
-    "@balldontlie/sdk": "^1.2.2",
-    "@types/node": "^22.14.1",
-    "typescript": "^5.8.3"
-  },
+  "license": "UNLICENSED",
   "scripts": {
     "dbin": "bin/dist-bin.sh",
     "test": "NODE_PATH=`pwd`/dist jest",
     "run-test": "yarn test --watchAll"
   },
-  "license": "UNLICENSED",
+  "dependencies": {
+    "@balldontlie/sdk": "^1.2.2",
+    "argparse": "^2.0.1",
+    "typescript": "^5.8.3"
+  },
   "devDependencies": {
+    "@types/argparse": "^2.0.17",
     "@types/jest": "^29.5.14",
+    "@types/node": "^22.14.1",
     "eslint": "^9.24.0",
     "jest": "^29.7.0"
   }

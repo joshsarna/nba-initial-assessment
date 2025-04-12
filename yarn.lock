@@ -640,6 +640,11 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@types/argparse@^2.0.17":
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/@types/argparse/-/argparse-2.0.17.tgz#3895b4f71f239c7b3751e4651b56f1292c999885"
+  integrity sha512-fueJssTf+4dW4HODshEGkIZbkLKHzgu1FvCI4cTc/MKum/534Euo3SrN+ilq8xgyHnOjtmg33/hee8iXLRg1XA==
+
 "@types/babel__core@^7.1.14":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"
