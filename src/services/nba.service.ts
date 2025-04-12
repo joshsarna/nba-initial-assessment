@@ -32,16 +32,21 @@ class NbaService {
     return matchingTeams[0]
   }
 
+  /**
+   * Returns a breakdown of how many players were obtained in each draft round for a team
+   */
   getPlayersPerDraftRound = async (teamId: number): Promise<Record<string, number>> => {
     const players: NBAPlayer[] = await this.getPlayers(teamId)
+    return this.countPlayersPerDraftRound(players)
+  }
+
+  private countPlayersPerDraftRound = (players: NBAPlayer[]): Record<string, number> => {
     const playersPerDraftRound: Record<string, number> = {}
     players.forEach((player) => {
-      if (player.draft_round) {
-        if (!playersPerDraftRound[player.draft_round]) {
-          playersPerDraftRound[player.draft_round] = 0
-        }
-        playersPerDraftRound[player.draft_round]++
+      if (!playersPerDraftRound[player.draft_round]) {
+        playersPerDraftRound[player.draft_round] = 0
       }
+      playersPerDraftRound[player.draft_round]++
     })
 
     return playersPerDraftRound

@@ -9,15 +9,15 @@ $ yarn && yarn tsc
 ```bash
 $ yarn dbin src/bin/get-draft-round-breakdown-for-team.ts --team='Bucks'
 Team Name: Milwaukee Bucks
-Draft Rounds: { '1': 18, '2': 5 }
+Draft Rounds: { '1': 18, '2': 5, null: 2 }
 
 $ dbin src/bin/get-draft-round-breakdown-for-team.ts --team='Milwaukee'
 Team Name: Milwaukee Bucks
-Draft Rounds: { '1': 18, '2': 5 }
+Draft Rounds: { '1': 18, '2': 5, null: 2 }
 
 $ dbin src/bin/get-draft-round-breakdown-for-team.ts --team='Milwaukee Bucks'
 Team Name: Milwaukee Bucks
-Draft Rounds: { '1': 18, '2': 5 }
+Draft Rounds: { '1': 18, '2': 5, null: 2 }
 ```
 
 ## Errors
